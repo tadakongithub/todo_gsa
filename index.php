@@ -21,6 +21,7 @@ if(!isset($_SESSION['username'])){
   </header>
   <main>
     <a href="./create-todo.php">create a new todo</a>
+    <a href="./create-category.php">create a new category</a>
     <h1>To Do List</h1>
   </main>
 </body>
