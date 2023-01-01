@@ -1,3 +1,12 @@
+<?php
+
+require('./inc/header.php');
+
+if(!isset($_SESSION['username'])){
+  header('Location: ./register.php');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +16,11 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>To Do List</h1>
+  <header>
+    <a href="./logout.php">Logout</a>
+  </header>
+  <main>
+    <h1>To Do List</h1>
+  </main>
 </body>
 </html>

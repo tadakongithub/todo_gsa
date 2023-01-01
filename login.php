@@ -27,9 +27,10 @@ if($_POST['submit']){
     $stmt->execute([$username]);
     $user = $stmt->fetch();
     if($user && password_verify($password, $user['password'])){
+      $_SESSION['username'] = $user['username'];
       header('Location: ./index.php');
     } else {
-      $password_err = 'Incorrect password';
+      $password_err = 'The username doesn\'t exist or incorrect password';
     }
   }
 }

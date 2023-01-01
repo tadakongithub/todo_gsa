@@ -24,6 +24,7 @@ if($_POST['submit']){
     $stmt = $conn->prepare($sql);
     $stmt->execute([$username, $password]);
     // redirect user to home page
+    $_SESSION['username'] = $username;
     header('Location: ./index.php');
   }
 }
@@ -39,18 +40,23 @@ if($_POST['submit']){
   <title>Document</title>
 </head>
 <body>
-  <form action="./register.php" method="POST">
-    <div>
-      <label for="username">User Name</label>
-      <input type="text" id="username" name="username" />
-      <p><?php echo $username_err; ?></p>
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" />
-      <p><?php echo $password_err; ?></p>
-    </div>
-    <input type="submit" name="submit" value="Submit" />
-  </form>
+  <header>
+    <a href="./login.php">Login</a>
+  </header>
+  <main>
+    <form action="./register.php" method="POST">
+      <div>
+        <label for="username">User Name</label>
+        <input type="text" id="username" name="username" />
+        <p><?php echo $username_err; ?></p>
+      </div>
+      <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" />
+        <p><?php echo $password_err; ?></p>
+      </div>
+      <input type="submit" name="submit" value="Submit" />
+    </form>
+  </main>
 </body>
 </html>
