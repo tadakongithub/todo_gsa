@@ -7,6 +7,8 @@
 - todo create
 - todo delete
 - todo edit
+- associate todo_category to todo
+- show what todos each category has
 
 ## Database Schema
 
