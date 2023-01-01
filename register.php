@@ -1,5 +1,7 @@
 <?php
 
+require('./inc/header.php');
+
 if($_POST['submit']){
   $username = $password = '';
   $username_err = $password_err = '';
@@ -11,15 +13,18 @@ if($_POST['submit']){
   }
 
   if(!empty($_POST['password'])){
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
   } else {
     $password_err = 'Please provide password';
   }
 
   if(empty($username_err) && empty($password_err)){
     //store data in database
+    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$username, $password]);
     // redirect user to home page
-    echo 'valid inputs';
+    header('Location: ./index.php');
   }
 }
 
