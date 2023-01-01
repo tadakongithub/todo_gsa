@@ -1,3 +1,28 @@
+<?php
+
+require './inc/header.php';
+
+if(!isset($_SESSION['username'])){
+  header('Location: ./login.php');
+}
+
+if($_POST['submit']){
+  $category = '';
+  $category_err = '';
+
+  if(empty($_POST['new_category'])){
+    $category_err = 'Value was not provided';
+  } else {
+    $category = filter_input(INPUT_POST, 'new_category', FILTER_SANITIZE_SPECIAL_CHARS);
+    //store new category in db and redirect
+    $sql = "INSERT INTO categories (name) VALUES (?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$category]);
+    header('Location: ./index.php');
+  }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,10 +32,11 @@
   <title>Document</title>
 </head>
 <body>
-  <form action="./" method="POST">
+  <form action="./create-category.php" method="POST">
     <div>
       <label for="new_category">Category Name</label>
       <input type="text" id="new_category" name="new_category" />
+      <p><?php echo $category_err; ?></p>
     </div>
     <input type="submit" name="submit" value="Submit" />
   </form>
