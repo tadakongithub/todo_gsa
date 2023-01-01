@@ -20,6 +20,7 @@ if(!isset($_SESSION['username'])){
     <a href="./logout.php">Logout</a>
   </header>
   <main>
+    <a href="./create-todo.php">create a new todo</a>
     <h1>To Do List</h1>
   </main>
 </body>
