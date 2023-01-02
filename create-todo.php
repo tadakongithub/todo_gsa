@@ -28,7 +28,7 @@ if($_POST['submit']){
   }
 
   //check if category id exists in categories table
-  $sql = "SELECT COUNT(*) from categories WHERE id = ?";
+  $sql = "SELECT COUNT(*) from categories WHERE cat_id = ?";
   $stmt = $conn->prepare($sql);
   $count = $stmt->execute([$_POST['category']]);
   if($count < 1){
@@ -64,7 +64,7 @@ if($_POST['submit']){
       <label for="category">Category</label>
       <select name="category" id="category">
         <?php foreach($categories_arr as $category): ?>
-          <option value="<?php echo $category['id'] ;?>"><?php echo $category['name']; ?></option>
+          <option value="<?php echo $category['cat_id'] ;?>"><?php echo $category['cat_name']; ?></option>
         <?php endforeach ;?>
       </select>
       <p><?php echo $category_err; ?></p>
