@@ -15,7 +15,7 @@ if($_POST['submit']){
   } else {
     $category = filter_input(INPUT_POST, 'new_category', FILTER_SANITIZE_SPECIAL_CHARS);
     //store new category in db and redirect
-    $sql = "INSERT INTO categories (name) VALUES (?)";
+    $sql = "INSERT INTO categories (cat_name) VALUES (?)";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$category]);
     header('Location: ./index.php');
