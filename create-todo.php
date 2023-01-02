@@ -2,10 +2,51 @@
 
 require './inc/header.php';
 
+if(!isset($_SESSION['username'])){
+  header('Location: ./register.php');
+}
+
 $sql = "SELECT * FROM categories";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 $categories_arr = $stmt->fetchAll();
+
+if($_POST['submit']){
+  // get user id
+  $sql = "SELECT * FROM users WHERE username = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$_SESSION['username']]);
+  $user_id = $stmt->fetchAll()[0]['id'];
+
+  
+  $todo = $category = '';
+  $todo_err = $category_err = '';
+
+  //check if input was provided for todo
+  if(empty($_POST['todo'])){
+    $todo_err = 'No value was provided';
+  }
+
+  //check if category id exists in categories table
+  $sql = "SELECT COUNT(*) from categories WHERE id = ?";
+  $stmt = $conn->prepare($sql);
+  $count = $stmt->execute([$_POST['category']]);
+  if($count < 1){
+    $category_err = 'invalid category value';
+  }
+
+  if(empty($todo_err) && empty($category_err)){
+    $todo = filter_input(INPUT_POST, 'todo', FILTER_SANITIZE_SPECIAL_CHARS);
+    $sql = "INSERT INTO todos (todo, category_id, user_id) VALUES (?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$todo, $_POST['category'], $user_id]);
+    header('Location: ./index.php');
+  }
+
+}
+
+
+
 
 ?>
 
@@ -18,7 +59,7 @@ $categories_arr = $stmt->fetchAll();
   <title>Document</title>
 </head>
 <body>
-  <form action="./" method="POST">
+  <form action="./create-todo.php" method="POST">
     <div>
       <label for="category">Category</label>
       <select name="category" id="category">
@@ -26,6 +67,7 @@ $categories_arr = $stmt->fetchAll();
           <option value="<?php echo $category['id'] ;?>"><?php echo $category['name']; ?></option>
         <?php endforeach ;?>
       </select>
+      <p><?php echo $category_err; ?></p>
     </div>
     <div>
       <label for="todo">Todo</label>
