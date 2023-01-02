@@ -17,7 +17,7 @@ $stmt = $conn->prepare($sql);
 $stmt->execute([$user_id]);
 $todos = $stmt->fetchAll();
 
-//counter
+//data restructuring for display
 $display_arr = array();
 foreach($todos as $todo){
   if(array_key_exists($todo['cat_id'], $display_arr)){
@@ -37,6 +37,10 @@ foreach($todos as $todo){
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <title>Document</title>
 </head>
 <body>
@@ -51,10 +55,21 @@ foreach($todos as $todo){
       <h2><?php echo $category['cat_name']; ?></h2>
       <ul>
         <?php foreach($category['todos'] as $key => $todo):?>
-          <li><?php echo $todo; ?></li>
+          <li><?php echo $todo; ?> | <button class="edit" data-todo-id="<?php echo $key; ?>" data-todo="<?php echo $todo;?>">edit</button></li>
         <?php endforeach;?>
       </ul>
     <?php endforeach; ?>
+
+    <?php require './inc/modal_edit.php'; ?>
   </main>
+
+
+  <script>
+    $(".edit").click(function() {
+      $('#edit_todo_id').val($(this).data('todo-id'));
+      $('#edit_todo').val($(this).data('todo'));
+      $('#edit_modal').modal('show');
+    });
+  </script>
 </body>
 </html>
