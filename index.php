@@ -18,7 +18,16 @@ $stmt->execute([$user_id]);
 $todos = $stmt->fetchAll();
 
 //counter
-$counter;
+$display_arr = array();
+foreach($todos as $todo){
+  if(array_key_exists($todo['cat_id'], $display_arr)){
+    $display_arr[$todo['cat_id']]["todos"][$todo['todo_id']] = $todo['todo'];
+  } else {
+    $display_arr[$todo['cat_id']]["cat_name"] = $todo['cat_name'];
+    $display_arr[$todo['cat_id']]["todos"] = array();
+    $display_arr[$todo['cat_id']]["todos"][$todo['todo_id']] = $todo['todo'];
+  }
+}
 
 
 ?>
@@ -38,15 +47,14 @@ $counter;
     <a href="./create-todo.php">create a new todo</a>
     <a href="./create-category.php">create a new category</a>
     <h1>To Do List</h1>
-    <?php foreach($todos as $todo): ?>
-      <?php if($todo['cat_id'] != $counter):?>
-        <?php $counter = $todo['cat_id']; ?>
-        <h3><?php echo $todo['cat_name'];?></h3>
-        <li><?php echo $todo['todo']; ?></li>
-      <?php else:?>
-        <li><?php echo $todo['todo']; ?></li>
-      <?php endif;?>
-    <?php endforeach ;?>
+    <?php foreach($display_arr as $category) :?>
+      <h2><?php echo $category['cat_name']; ?></h2>
+      <ul>
+        <?php foreach($category['todos'] as $key => $todo):?>
+          <li><?php echo $todo; ?></li>
+        <?php endforeach;?>
+      </ul>
+    <?php endforeach; ?>
   </main>
 </body>
 </html>
