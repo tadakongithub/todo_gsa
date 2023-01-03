@@ -23,8 +23,9 @@ if(!empty($_POST['todo_id']) && !empty($_POST['todo'])){
     echo 'success';
   }
 
+} else {
+  echo 'fail';
 }
-
 /*
 require('./inc/header.php');
 
