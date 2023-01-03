@@ -4,24 +4,13 @@
 
 - User registration
 - User login
+- user logout
 - todo create
-- todo delete
 - todo edit
-- associate todo_category to todo
-- show what todos each category has
+- create categories and have each todo belong to a category
+- show the list of todos by category
 
-## Database Schema
+## Features for future development
 
-### tables
-
-#### users
-
-- id
-- username
-- password
-- updated_time
-
-#### todos
-
-- id
-- content
+- complete or delete todo
+- styling
