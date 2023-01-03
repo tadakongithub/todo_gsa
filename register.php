@@ -17,7 +17,7 @@ if($_POST['submit']){
   $stmt->execute([$username]);
   $result = $stmt->fetchAll();
   if(count($result) > 0){
-    $username_err = 'username already exist';
+    $username_err = 'username already taken';
   }
 
   if(!empty($_POST['password'])){

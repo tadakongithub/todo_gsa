@@ -48,7 +48,7 @@ foreach($todos as $todo){
     <a href="./logout.php">Logout</a>
   </header>
   <main>
-    <a href="./create-todo.php">create a new todo</a>
+    <a href="./create-todo.php">create a new todo</a><br>
     <a href="./create-category.php">create a new category</a>
     <h1>To Do List</h1>
     <?php foreach($display_arr as $category) :?>
