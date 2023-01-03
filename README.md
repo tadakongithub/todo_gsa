@@ -1,5 +1,11 @@
 # todo_gsa
 
+## Dev Environment
+
+MySQL 5.7.34
+PHP 7.4.21
+Apache 2.4.46
+
 ## Features
 
 - User registration
