@@ -6,6 +6,12 @@ if(!isset($_SESSION['username'])){
   header('Location: ./login.php');
 }
 
+// get user id
+$sql = "SELECT * FROM users WHERE username = ?";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$_SESSION['username']]);
+$user_id = $stmt->fetchAll()[0]['id'];
+
 if($_POST['submit']){
   $category = '';
   $category_err = '';
@@ -15,9 +21,9 @@ if($_POST['submit']){
   } else {
     $category = filter_input(INPUT_POST, 'new_category', FILTER_SANITIZE_SPECIAL_CHARS);
     //store new category in db and redirect
-    $sql = "INSERT INTO categories (cat_name) VALUES (?)";
+    $sql = "INSERT INTO categories (cat_name, user_id) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->execute([$category]);
+    $stmt->execute([$category, $user_id]);
     header('Location: ./index.php');
   }
 }

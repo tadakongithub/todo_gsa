@@ -6,19 +6,19 @@ if(!isset($_SESSION['username'])){
   header('Location: ./register.php');
 }
 
-$sql = "SELECT * FROM categories";
+// get user id
+$sql = "SELECT * FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
-$stmt->execute();
+$stmt->execute([$_SESSION['username']]);
+$user_id = $stmt->fetchAll()[0]['id'];
+
+$sql = "SELECT * FROM categories WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->execute([$user_id]);
 $categories_arr = $stmt->fetchAll();
 
-if($_POST['submit']){
-  // get user id
-  $sql = "SELECT * FROM users WHERE username = ?";
-  $stmt = $conn->prepare($sql);
-  $stmt->execute([$_SESSION['username']]);
-  $user_id = $stmt->fetchAll()[0]['id'];
 
-  
+if($_POST['submit']){  
   $todo = $category = '';
   $todo_err = $category_err = '';
 
@@ -59,21 +59,25 @@ if($_POST['submit']){
   <title>Document</title>
 </head>
 <body>
-  <form action="./create-todo.php" method="POST">
-    <div>
-      <label for="category">Category</label>
-      <select name="category" id="category">
-        <?php foreach($categories_arr as $category): ?>
-          <option value="<?php echo $category['cat_id'] ;?>"><?php echo $category['cat_name']; ?></option>
-        <?php endforeach ;?>
-      </select>
-      <p><?php echo $category_err; ?></p>
-    </div>
-    <div>
-      <label for="todo">Todo</label>
-      <input type="text" id="todo" name="todo" />
-    </div>
-    <input type="submit" name="submit" value="Submit" />
-  </form>
+  <?php if(count($categories_arr) < 1) :?>
+    <a href="./create-category.php">First create a category</a>
+  <?php else :?>
+    <form action="./create-todo.php" method="POST">
+      <div>
+        <label for="category">Category</label>
+        <select name="category" id="category">
+          <?php foreach($categories_arr as $category): ?>
+            <option value="<?php echo $category['cat_id'] ;?>"><?php echo $category['cat_name']; ?></option>
+          <?php endforeach ;?>
+        </select>
+        <p><?php echo $category_err; ?></p>
+      </div>
+      <div>
+        <label for="todo">Todo</label>
+        <input type="text" id="todo" name="todo" />
+      </div>
+      <input type="submit" name="submit" value="Submit" />
+    </form>
+  <?php endif ;?>
 </body>
 </html>

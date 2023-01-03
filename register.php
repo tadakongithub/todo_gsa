@@ -12,6 +12,14 @@ if($_POST['submit']){
     $username_err = 'Please provide username';
   }
 
+  $sql = "SELECT * from users WHERE username = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([$username]);
+  $result = $stmt->fetchAll();
+  if(count($result) > 0){
+    $username_err = 'username already exist';
+  }
+
   if(!empty($_POST['password'])){
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
   } else {
@@ -23,6 +31,7 @@ if($_POST['submit']){
     $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->execute([$username, $password]);
+
     // redirect user to home page
     $_SESSION['username'] = $username;
     header('Location: ./index.php');
